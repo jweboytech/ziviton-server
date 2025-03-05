@@ -5,6 +5,8 @@ import {
   HttpException,
   HttpStatus,
   Logger,
+  BadRequestException,
+  GatewayTimeoutException,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { HTTP_CODE } from 'src/constants';
@@ -24,17 +26,21 @@ export class ExceptionsFilter implements ExceptionFilter {
 
     let message;
 
-    if (exception instanceof HttpException) {
-      const res = exception.getResponse();
-      // @ts-ignore
-      message = res.message;
-    } else {
-      message = exception.message || 'Internal server error';
+    if (exception instanceof BadRequestException) {
+      message = '请求参数不全';
+    }
+
+    if (exception instanceof GatewayTimeoutException) {
+      message = '服务器错误';
+    }
+
+    if (exception instanceof Error) {
+      message = exception.message;
     }
 
     this.logger.error(`Request {${request.url}, ${status}} ${message}`);
 
-    response.status(status).json({
+    response.status(HttpStatus.OK).json({
       code: HTTP_CODE.ERROR,
       msg: message,
       data: null,
