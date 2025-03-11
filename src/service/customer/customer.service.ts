@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Customer } from './entity/customer.entity';
 import { Repository } from 'typeorm';
 import { CreateCustomerDTO } from './dto/create.dto';
+import { UpdateCustomerDTO } from './dto/update.dto';
 
 @Injectable()
 export class CustomerService {
@@ -25,6 +26,15 @@ export class CustomerService {
       .insert()
       .into(Customer)
       .values(createDto)
+      .execute();
+  }
+
+  updateOne(id: number, updateDto: Omit<UpdateCustomerDTO, 'id'>) {
+    return this.repository
+      .createQueryBuilder()
+      .update(Customer)
+      .where('id = :id', { id })
+      .set(updateDto)
       .execute();
   }
 

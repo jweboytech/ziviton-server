@@ -17,6 +17,9 @@ export class Customer {
   @Column()
   phone: string;
 
+  @Column({ nullable: true })
+  remark: string;
+
   @CreateDateColumn({ name: 'create_at' })
   createAt: Date;
 
