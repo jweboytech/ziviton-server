@@ -24,19 +24,19 @@ export class ExceptionsFilter implements ExceptionFilter {
         ? exception.getStatus()
         : HttpStatus.OK;
 
-    let message;
+    const message = exception.message;
 
-    if (exception instanceof BadRequestException) {
-      message = '请求参数不全';
-    }
+    // if (exception instanceof BadRequestException) {
+    //   message = '请求参数不全';
+    // }
 
-    if (exception instanceof GatewayTimeoutException) {
-      message = '服务器错误';
-    }
+    // if (exception instanceof GatewayTimeoutException) {
+    //   message = '服务器错误';
+    // }
 
-    if (exception instanceof Error) {
-      message = exception.message;
-    }
+    // if (exception instanceof Error) {
+    //   message = exception.message;
+    // }
 
     this.logger.error(`Request {${request.url}, ${status}} ${message}`);
 

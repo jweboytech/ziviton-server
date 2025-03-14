@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { CustomerModule } from './service/customer/customer.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TrialController } from './service/trial/trial.controller';
+import { TrialModule } from './service/trial/trial.module';
 
 @Module({
   imports: [
@@ -32,6 +34,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       },
     }),
     CustomerModule,
+    TrialModule,
   ],
   controllers: [AppController],
   providers: [AppService],

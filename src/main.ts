@@ -29,13 +29,7 @@ async function bootstrap() {
 
   SwaggerModule.setup('api', app, document);
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true, // 自动过滤未在 DTO 中定义的字段
-      forbidNonWhitelisted: true, // 拒绝包含未定义字段的请求
-      transform: true, // 自动转换类型（如字符串转数字）
-    }),
-  );
+  app.useGlobalPipes(new ValidationPipe({}));
   app.enableCors({ origin: '*' });
   app.useGlobalInterceptors(new TransformInterceptor());
   app.useGlobalFilters(new ExceptionsFilter());

@@ -1,27 +1,27 @@
 import { Body, Controller, Get, Post, Put } from '@nestjs/common';
-import { CustomerService } from './customer.service';
-import { CreateCustomerDTO } from './dto/create.dto';
+import { CreateTrialDTO } from './dto/create.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { UpdateCustomerDTO } from './dto/update.dto';
+import { UpdateTrialDTO } from './dto/update.dto';
+import { TrialService } from './trial.service';
 
-@ApiTags('Customer')
-@Controller('customer')
-export class CustomerController {
-  constructor(private readonly service: CustomerService) {}
+@ApiTags('Trial')
+@Controller('trial')
+export class TrialController {
+  constructor(private readonly service: TrialService) {}
 
   @Post()
-  async insertOne(@Body() createDto: CreateCustomerDTO) {
+  async insertOne(@Body() createDto: CreateTrialDTO) {
     const record = await this.service.findOneByName(createDto.name);
     if (record == null) {
       const data = await this.service.insertOne(createDto);
       return data.identifiers[0].id;
     }
 
-    throw new Error('客户已存在');
+    throw new Error('用户已存在');
   }
 
   @Put()
-  async updateOne(@Body() updateDto: UpdateCustomerDTO) {
+  async updateOne(@Body() updateDto: UpdateTrialDTO) {
     const { id, ...restDto } = updateDto;
     await this.service.updateOne(id, restDto);
     return true;
