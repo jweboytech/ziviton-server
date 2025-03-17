@@ -1,18 +1,18 @@
 # 构建阶段
-FROM node:18-slim AS builder
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
 COPY . .
 
 RUN npm i -g pnpm --registry=https://registry.npmmirror.com && \
-    pnpm install
+    pnpm install --force
 
 RUN pnpm build 
 
 
 # 运行阶段
-FROM node:18-slim
+FROM node:20-alpine
 
 WORKDIR /app
 
@@ -20,7 +20,7 @@ COPY --from=builder /app/dist ./dist
 COPY package.json pnpm-lock.yaml ./
 
 RUN npm i -g pnpm --registry=https://registry.npmmirror.com && \
-    pnpm install --prod --frozen-lockfile
+    pnpm install --prod --frozen-lockfile 
 
 ARG DATABASE_HOST
 ARG DATABASE_PORT
